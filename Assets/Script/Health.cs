@@ -5,6 +5,7 @@ using UnityEngine;
 namespace TowerDefense{
     public class Health : MonoBehaviour
     {
+        LevelManager load;
         Player player;
         Enemy enemy;
         public int currentHealth = 10;
@@ -17,7 +18,8 @@ namespace TowerDefense{
                     player.gold += enemy.goldGive;
                     ValueDisplay.OnValueChanged.Invoke("PlayerGold", player.gold);
                 } else{
-                    Debug.Log("U losed");
+                    load.loadNum = 0;
+                    load.LoadIt();
                 }
             }
         }
@@ -32,6 +34,7 @@ namespace TowerDefense{
             if(!gameObject.CompareTag("Player")){
                 enemy = GetComponent<Enemy>();
             }
+            load = FindObjectOfType<LevelManager>();
         }
     }
 

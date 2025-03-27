@@ -19,15 +19,16 @@ namespace TowerDefense{
         }
 
         private void Update(){
-            if (Input.GetMouseButtonDown(0) && !cursorCapture.cursorOverUI){
+            if (Input.GetMouseButtonDown(0) && !cursorCapture.cursorOverUI && !LevelManager.isTitleScreen)
+            {
                 TryPlaceTower(grid, Grid.WorldToGrid(cursor.transform.position));
             }
         }
 
         public bool TryPlaceTower(Grid grid, Vector3Int tileCoordinates){
+            if(!towerPrefab) return false;
             if (gold < Tower_SO.GetCost(towerPrefab)) return false;
             if(grid.Occupied(tileCoordinates)) return false;
-
             GameObject newTower = Instantiate(towerPrefab, tileCoordinates, Quaternion.identity);
             grid.Add(tileCoordinates, newTower);
 

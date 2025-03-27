@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace TowerDefense{
@@ -8,6 +9,7 @@ namespace TowerDefense{
         private Dictionary<Vector3Int, GameObject> gameObjects = new Dictionary<Vector3Int, GameObject>();
 
         public bool Occupied(Vector3Int tileCoordinates){
+            if (Cursor.tile.transform.childCount > 0) return true;
             return gameObjects.ContainsKey(tileCoordinates);
         }
 
