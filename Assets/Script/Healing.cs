@@ -10,9 +10,8 @@ namespace TowerDefense
         [SerializeField] private List<GameObject> buddies = new List<GameObject>();
         GameObject healing;
         public ParticleSystem ps;
-        private void OnDestroy()
+        private void Heal()
         {
-            ps.Play();
             RemoveInvalid();
             if (buddies.Count > 0)
             {
@@ -29,7 +28,7 @@ namespace TowerDefense
         }
         void HealTarget()
         {
-            healing.GetComponent<Health>().currentHealth += 4;
+            healing.GetComponent<Health>().currentHealth += 10;
         }
         private void OnTriggerEnter(Collider other)
         {
@@ -48,6 +47,10 @@ namespace TowerDefense
                 if (buddies[i]) i++;
                 else buddies.RemoveAt(i);
             }
+        }
+        public void PlayEffect()
+        {
+            Instantiate(ps, transform.position, transform.rotation);
         }
     }
 }

@@ -19,8 +19,24 @@ namespace TowerDefense{
 
         public void DamageTarget(){
             if (!enemyTarget) return;
+            enemyTarget.GetComponent<Enemy>().isWizard = true;
             Health.TryDamage(enemyTarget, towerType.damage);
             RemoveDestoryedEnemies();
+            
+        }
+        void Lightning()
+        {
+            if(enemiesInRange.Count > 0){
+                int i = 0;
+                ps.Play();
+                
+                while (i < enemiesInRange.Count && i < 5){
+                    enemyTarget = enemiesInRange[i];
+                    DamageTarget();
+                    i++;
+                }
+                RemoveDestoryedEnemies();
+            }
         }
 
         private void RemoveDestoryedEnemies(){
@@ -37,17 +53,7 @@ namespace TowerDefense{
             while(enemiesInRange.Count > 0){
                 RemoveDestoryedEnemies();
                 animator.SetTrigger("Fire");
-                if(enemiesInRange.Count > 0){
-                    int i = 0;
-                    ps.Play();
-
-                    while(i < enemiesInRange.Count){
-                        enemyTarget = enemiesInRange[i];
-                        DamageTarget();
-                        i++;
-                    }
-                    RemoveDestoryedEnemies();
-                }
+                
                 
 
                 yield return new WaitForSeconds(towerType.fireRate);

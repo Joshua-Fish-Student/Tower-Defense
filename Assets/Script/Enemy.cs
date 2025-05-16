@@ -5,15 +5,23 @@ using UnityEngine;
 namespace TowerDefense{
     public class Enemy : MonoBehaviour
     {
+        public Enemy_SO enemyType;
         public Path path;
         public int index = 0;
+        public Animator animator;
         public float speed = 1f;
-        public int damage = 1;
-        public int goldGive = 1;
+        int damage = 1;
+        int maxGoldGive = 1;
+        public bool isWizard;
+        public bool end = false;
+        
 
         void Start(){
             path = FindObjectOfType<Path>();
             StartCoroutine(FollowPath());
+            speed = enemyType.speed;
+            damage = enemyType.damage;
+            maxGoldGive = enemyType.goldGive;
         }
         IEnumerator FollowPath(){
             Vector3 target;
@@ -29,7 +37,13 @@ namespace TowerDefense{
                 yield return null;
             }
             Player player = FindObjectOfType<Player>();
+            Instantiate(player.ps, transform.position, transform.rotation);
+            end = true;
             Health.TryDamage(player.gameObject,damage);
+            Destroy(gameObject);
+        }
+        void DestroySelf()
+        {
             Destroy(gameObject);
         }
         

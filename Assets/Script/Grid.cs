@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TowerDefense{
     public class Grid : MonoBehaviour
     {
-        private Dictionary<Vector3Int, GameObject> gameObjects = new Dictionary<Vector3Int, GameObject>();
+        public Dictionary<Vector3Int, GameObject> gameObjects = new Dictionary<Vector3Int, GameObject>();
 
         public bool Occupied(Vector3Int tileCoordinates){
             if (Cursor.tile.transform.childCount > 0) return true;
@@ -20,11 +20,9 @@ namespace TowerDefense{
             return true;
         }
 
-        public void Remove(Vector3Int tileCoordinates){
-            if (!gameObjects.ContainsKey(tileCoordinates)) return;
-
-            Destroy(gameObjects[tileCoordinates]);
-            gameObjects.Remove(tileCoordinates);
+        public GameObject Remove(Vector3Int tileCoordinates){
+            if (!gameObjects.ContainsKey(tileCoordinates)) return null;
+            return gameObjects[tileCoordinates];
         }
 
         public static Vector3Int WorldToGrid(Vector3 worldPosition){

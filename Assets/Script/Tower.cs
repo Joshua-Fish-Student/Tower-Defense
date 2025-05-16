@@ -11,9 +11,17 @@ namespace TowerDefense{
         private bool firing = false;
         public GameObject enemyTarget;
         Animator animator;
+        Player player;
+        LevelManager levelManager;
+        Grid grid;
+        public bool isGoldTower;
+        public int giveUntilDestroy = 5;
 
         private void Start(){
             animator = GetComponent<Animator>();
+            player = FindObjectOfType<Player>();
+            levelManager = FindObjectOfType<LevelManager>();
+            grid = FindObjectOfType<Grid>();
         }
 
         public void DamageTarget(){
@@ -45,14 +53,40 @@ namespace TowerDefense{
             }
             firing = false;
         }
+        void Fire()
+        {
+            if(towerType.name == "FireWizardTower")
+                {
+                    GetComponentInChildren<ParticleSystem>().Play();
+                }
+        }
 
         private void OnTriggerEnter(Collider other){
             if(other.gameObject.CompareTag("Enemy")) enemiesInRange.Add(other.gameObject);
 
-            if(!firing) StartCoroutine(DamageEnemyTarget());
+            if(!firing && !isGoldTower) StartCoroutine(DamageEnemyTarget());
         }
         private void OnTriggerExit(Collider other){
             enemiesInRange.Remove(other.gameObject);
+        }
+
+        IEnumerator GivePlayerGold()
+        {
+            firing = true;
+            yield return new WaitForSeconds(towerType.fireRate);
+            player.gold += towerType.damage;
+            ValueDisplay.OnValueChanged.Invoke("PlayerGold", player.gold);
+            giveUntilDestroy -= 1;
+            firing = false;
+        }
+        private void Update()
+        {
+            if (isGoldTower && !firing) StartCoroutine(GivePlayerGold());
+            if (giveUntilDestroy == 0 && isGoldTower && !levelManager.isTitleScreen)
+            {
+                grid.gameObjects.Remove(Grid.WorldToGrid(gameObject.transform.position));
+                Destroy(gameObject);
+            }
         }
     }
 

@@ -373,7 +373,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
+  m_Radius: 2.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1742129925570806514
 Rigidbody:
@@ -439,6 +439,7 @@ MonoBehaviour:
   enemiesInRange: []
   towerType: {fileID: 11400000, guid: a92c0c8bd8a91cb428ce305514af0f12, type: 2}
   enemyTarget: {fileID: 0}
+  isGoldTower: 0
 --- !u!1001 &3411392961040371339
 PrefabInstance:
   m_ObjectHideFlags: 0
